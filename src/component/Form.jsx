@@ -52,7 +52,7 @@ const MyForm = () => {
             .then(() => {
                 localStorage.setItem("formSubmitted", "true");
                 setHasSubmitted(true);
-                setShowThanks(true);
+
             })
             .catch((error) => {
                 console.error("Error submitting form:", error);
