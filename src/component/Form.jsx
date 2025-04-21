@@ -10,7 +10,6 @@ const MyForm = () => {
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const btn = document.getElementById("#Btn")
 
-
     const [formValues, setFormValues] = useState({
         name: "",
         mobileNo: "",
@@ -52,8 +51,7 @@ const MyForm = () => {
             .then(() => {
                 localStorage.setItem("formSubmitted", "true");
                 setHasSubmitted(true);
-                btn.setAttribute('disabled', true);
-
+                setShowThanks(true);
             })
             .catch((error) => {
                 console.error("Error submitting form:", error);
@@ -86,10 +84,8 @@ const MyForm = () => {
                                 <div className="flex justify-center">
                                     <div className="w-28 h-28 rounded-full border-2 border-orange-600 overflow-hidden">
                                         <div className="flex justify-center mb-4">
-                                            <label for="actual-btn">
+                                            <label htmlFor="actual-btn">
                                                 <img
-
-
                                                     className="w-28 h-28 rounded-full border-2 border-orange-600 object-cover"
                                                     alt="User Image"
                                                     src={formValues.userImage ? URL.createObjectURL(formValues.userImage) : Addimg}
@@ -146,7 +142,7 @@ const MyForm = () => {
                                         required
                                         value={formValues.address}
                                         onChange={handleChange}
-                                        placeholder="12/1, मेन रोड, नागदा, मध्य प्रदेश, 452001"
+                                        placeholder=" नागदा, मध्य प्रदेश, 452001"
                                         className="block w-full rounded-md px-3 py-1.5 text-base"
                                     />
                                 </div>
