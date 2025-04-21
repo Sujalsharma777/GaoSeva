@@ -22,7 +22,7 @@ const MyForm = () => {
         const submitted = localStorage.getItem("formSubmitted");
         if (submitted === "true") {
             setHasSubmitted(true);
-            setShowThanks(true);
+
         }
     }, []);
 
