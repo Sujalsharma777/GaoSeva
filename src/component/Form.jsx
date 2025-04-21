@@ -8,8 +8,8 @@ const MyForm = () => {
     const formRef = useRef(null);
     const [showThanks, setShowThanks] = useState(false);
     const [hasSubmitted, setHasSubmitted] = useState(false);
-    const profileimg = document.getElementById("#Profileimg")
-    const profilebtn = document.getElementById("#profilebtn")
+    const btn = document.getElementById("#Btn")
+
 
     const [formValues, setFormValues] = useState({
         name: "",
@@ -52,6 +52,7 @@ const MyForm = () => {
             .then(() => {
                 localStorage.setItem("formSubmitted", "true");
                 setHasSubmitted(true);
+                btn.setAttribute('disabled', true);
 
             })
             .catch((error) => {
