@@ -1,10 +1,10 @@
 import React from 'react'
-import Section from "../component/Hero"
+import Form from "../component/Form"
 const Home = () => {
     return (
         <>
 
-            <Section />
+            <Form />
 
 
         </>
