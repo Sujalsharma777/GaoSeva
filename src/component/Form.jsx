@@ -3,7 +3,7 @@ import logo from "../../public/f-1.jpg";
 import img from "../assets/image/0.jpg";
 import Addimg from "../assets/image/AddImga.png";
 import { useNavigate } from "react-router";
-
+import Donation from "../assets/image/donastionQr.jpeg"
 /* import html2canvas from 'html2canvas'*/
 
 const MyForm = () => {
@@ -85,7 +85,7 @@ const MyForm = () => {
     return (
         <>
             {hasSubmitted ? (
-                < div className="w-lvh sm:w-full h-full flex justify-center mt-5" >
+                < div className="sm:w-full h-full flex justify-center items-center mt-5" >
                     < div
                         className="bg-white grid gap-5 items-center justify-center min-h-screen p-4"
                         ref={divRef}>
@@ -146,7 +146,7 @@ const MyForm = () => {
                                         <img
                                             alt=""
                                             className="w-42 h-auto border border-red-600"
-                                            src="https://storage.googleapis.com/a1aa/image/eccd9f0c-1d15-46ff-6ec9-dcc2c5f8b5c0.jpg"
+                                            src={Donation}
                                         />
                                     </div>
                                     <div className="text-black text-lg font-extrabold">
@@ -212,7 +212,7 @@ const MyForm = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex justify-center mt-2 hidden ">
+                                <div className="justify-center mt-2 hidden ">
                                     <input
                                         id="actual-btn"
                                         type="file"
