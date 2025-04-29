@@ -8,6 +8,7 @@ import { Cube } from 'react-preloaders'
 import html2canvas from 'html2canvas-pro';
 import download from 'downloadjs';
 import { toBlob } from 'html-to-image';
+import env from 
 
 const MyForm = () => {
     const divRef = useRef();
@@ -15,7 +16,7 @@ const MyForm = () => {
     const formRef = useRef(null);
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
-
+    const preloaders = document.getElementById("preloader ")
 
     const [formValues, setFormValues] = useState({
         name: "",
@@ -24,21 +25,12 @@ const MyForm = () => {
         Message: "",
         IDImage: null,
     });
-    const downloadDivAsPng = async () => {
-        const element = divRef.current;
-
-        if (!element) {
-            return;
+    useEffect(() => {
+        if (!loading) {
+            document.body.style.overflow = 'auto';
+            document.documentElement.style.overflow = 'auto';
         }
-
-        try {
-            const canvas = await html2canvas(element);
-            const dataURL = canvas.toDataURL('image/png');
-            download(dataURL, 'gaoseva.png');
-        } catch (error) {
-            console.error('Error capturing or downloading the div:', error);
-        }
-    };
+    }, [loading]);
 
 
     const handleChange = (e) => {
@@ -63,9 +55,9 @@ const MyForm = () => {
     }, []);
 
 
+    const excelurl = process.env.REACT_APP_API_KEY
 
-
-
+    // form data store in excel 
     const handleEvent = (e) => {
         e.preventDefault();
         setLoading(true)
@@ -87,6 +79,7 @@ const MyForm = () => {
                 setHasSubmitted(true);
                 setLoading(false)
 
+
             })
             .catch((error) => {
                 console.error("Error submitting form:", error);
@@ -101,7 +94,7 @@ const MyForm = () => {
         setLoading(true);
 
     }
-
+    // share ID Logic
     const handleShare = async () => {
         const blob = await toBlob(divRef.current);
         const filesArray = [new File([blob], 'image.png', { type: blob.type })];
@@ -120,6 +113,22 @@ const MyForm = () => {
             console.error('Sharing not supported');
         }
     };
+    // download container Logic 
+    const downloadDivAsPng = async () => {
+        const element = divRef.current;
+
+        if (!element) {
+            return;
+        }
+
+        try {
+            const canvas = await html2canvas(element);
+            const dataURL = canvas.toDataURL('image/png');
+            download(dataURL, 'gaoseva.png');
+        } catch (error) {
+            console.error('Error capturing or downloading the div:', error);
+        }
+    };
 
 
     const image = img;
@@ -128,10 +137,8 @@ const MyForm = () => {
 
         <>
             {loading && (
-                <div className="preloader">
+                <div className="preloader ">
                     <Cube
-                        height="80"
-                        width="80"
                         background="blur"
                     />
                 </div>
