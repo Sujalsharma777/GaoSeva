@@ -4,18 +4,16 @@ import img from "../assets/image/0.jpg";
 import Addimg from "../assets/image/AddImga.png";
 import { useNavigate } from "react-router";
 import Donation from "../assets/image/donastionQr.jpeg"
-/* import html2canvas from 'html2canvas'*/
+import { Cube } from 'react-preloaders'
+import html2canvas from 'html2canvas'
 
 const MyForm = () => {
-    //dowloand Id card
-
     const divRef = useRef();
     const navigate = useNavigate();
-
     const formRef = useRef(null);
-    /*  const [showThanks, setShowThanks] = useState(false); */
     const [hasSubmitted, setHasSubmitted] = useState(false);
-    const btn = document.getElementById("#Btn");
+    const [loading, setLoading] = useState(false);
+
 
     const [formValues, setFormValues] = useState({
         name: "",
@@ -25,6 +23,19 @@ const MyForm = () => {
         IDImage: null,
     });
 
+    const handleChange = (e) => {
+
+        const { name, value, files } = e.target;
+
+        setFormValues(prev => ({
+            ...prev,
+
+            [name]: files ? files[0] : value,
+        }));
+
+    };
+
+
     useEffect(() => {
         const submitted = localStorage.getItem("formSubmitted");
         if (submitted === "true") {
@@ -32,30 +43,14 @@ const MyForm = () => {
 
         }
     }, []);
-    useEffect(() => {
-        // For files (like IDImage), we cannot directly save the file
-        const { IDImage, ...otherValues } = formValues;
-        localStorage.setItem('formValues', JSON.stringify(otherValues));
-    }, [formValues]);
 
-    useEffect(() => {
-        const savedFormValues = localStorage.getItem('formValues');
-        if (savedFormValues) {
-            setFormValues(JSON.parse(savedFormValues));
-        }
-    }, []);
 
-    const handleChange = (e) => {
-        const { name, value, files } = e.target;
-        setFormValues((prev) => ({
-            ...prev,
-            [name]: files ? files[0] : value,
-        }));
-    };
+
+
 
     const handleEvent = (e) => {
         e.preventDefault();
-
+        setLoading(true)
         const formData = new FormData(formRef.current);
 
         fetch(
@@ -72,22 +67,69 @@ const MyForm = () => {
             .then(() => {
                 localStorage.setItem("formSubmitted", 'true');
                 setHasSubmitted(true);
+                setLoading(false)
 
             })
             .catch((error) => {
                 console.error("Error submitting form:", error);
                 navigate("/FromFailed");
+                setLoading(false)
+
             });
+
+
     };
+    const handleChangeLoading = () => {
+        setLoading(true);
+
+    }
+    const handleDownload = () => {
+        const div = document.getElementById('myDiv');
+        html2canvas(div).then((canvas) => {
+            const link = document.createElement('a');
+            link.download = 'my-div-content.png';
+            link.href = canvas.toDataURL()
+            link.click();
+        });
+    };
+    const handleShare = async () => {
+        const div = document.getElementById('myDiv');
+        const textContent = div.innerText;
+
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'Shared Div Content',
+                    text: textContent,
+                });
+                console.log('Content shared successfully!');
+            } catch (error) {
+                console.error('Error sharing:', error);
+            }
+        } else {
+            alert('Share not supported on this browser.');
+        }
+    };
+
 
     const image = img;
 
     return (
+
         <>
+            {loading && (
+                <div className="preloader">
+                    <Cube
+                        height="80"
+                        width="80"
+                        background="blur"
+                    />
+                </div>
+            )}
             {hasSubmitted ? (
-                < div className="sm:w-full h-full flex justify-center items-center mt-5" >
-                    < div
-                        className="bg-white grid gap-5 items-center justify-center min-h-screen p-4"
+                < div className="font-devanagari font-bold sm:w-full h-full flex justify-center items-center mt-5" >
+                    < div id="myDiv"
+                        className="bg-white grid gap-5 items-center justify-center min-h-screen  p-4"
                         ref={divRef}>
                         <div
                             className="max-w-md w-full border border-red-600 rounded-[40px] gap-0 bg-white overflow-hidden "
@@ -102,11 +144,11 @@ const MyForm = () => {
                                     <h1 className="text-white font-extrabold text-3xl ml-3 leading-tight">
                                         गौ सेवा टीम
                                         <p className="text-white text-lg font-extrabold">
-                                            संस्थापक
+                                            संस्थापक : <br />
                                             <span className="text-yellow-400">
-                                                आचार्य धर्मेश महाराज
+                                                आचार्य धर्मेश महाराज,
                                             </span>
-                                            उज्जैन
+                                            <br />उज्जैन
                                         </p>
                                     </h1>
                                 </div>
@@ -153,17 +195,17 @@ const MyForm = () => {
                                         <p>
                                             गौ माता की सेवा करें, समृद्धि और संस्कृति विकास का हिस्सा
                                             बने | <br />
-                                            <span className="font-bold">"सेव करें"</span>
+                                            <span className="font-bold">"सेवा करें"</span>
                                         </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="flex gap-3 text-center justify-center">
-                            <div className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
+                            <div onClick={handleShare} className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
                                 Share
                             </div>
-                            <div className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
+                            <div onClick={handleDownload} className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
                                 Download
                             </div>
                         </div>
@@ -173,14 +215,14 @@ const MyForm = () => {
 
                 < div
                     style={{ backgroundImage: `url(${image})` }}
-                    className="bg-no-repeat bg-top bg-size-[1000px] sm:bg-size-[1500px]">
+                    className=" bg-no-repeat bg-top bg-size-full sm:bg-size-[1500px] ">
                     <div className="bg-linear-to-t from-rose-900 to-rose-0 flex flex-col justify-center items-center">
                         <div className="flex justify-center items-center flex-col *:p-5">
                             <div>
                                 <img
                                     src={logo}
                                     alt="logo not found"
-                                    className="w-36 h-auto rounded-full ring-8 ring-white shadow-xl shadow-black"
+                                    className="w-36 h-auto  rounded-full ring-8 ring-white shadow-xl shadow-black"
                                 />
                             </div>
                             <div>
@@ -194,7 +236,7 @@ const MyForm = () => {
                             <form
                                 ref={formRef}
                                 onSubmit={handleEvent}
-                                className="grid grid-rows-5 gap-10">
+                                className="grid grid-rows-5 sm:gap-10 gap-0  ">
                                 <div className="flex justify-center">
                                     <div className="w-28 h-28 rounded-full border-2 border-orange-600 overflow-hidden">
                                         <div className="flex justify-center mb-4">
@@ -212,7 +254,7 @@ const MyForm = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="justify-center mt-2 hidden ">
+                                <div className="justify-center mt-2 hidden  ">
                                     <input
                                         id="actual-btn"
                                         type="file"
@@ -220,7 +262,7 @@ const MyForm = () => {
                                         accept="image/*"
                                         required
                                         onChange={handleChange}
-                                        className="text-sm text-gray-500 "
+                                        className="text-sm text-gray-base "
                                     />
                                 </div>
                                 <div>
@@ -237,7 +279,7 @@ const MyForm = () => {
                                         required
                                         value={formValues.name}
                                         onChange={handleChange}
-                                        className="block w-full rounded-md px-3 py-1.5 text-base"
+                                        className="block w-full rounded-md px-3 py-1.5 text--base "
                                     />
                                 </div>
                                 <div>
@@ -254,7 +296,7 @@ const MyForm = () => {
                                         required
                                         value={formValues.mobileNo}
                                         onChange={handleChange}
-                                        className="block w-full rounded-md px-3 py-1.5 text-base"
+                                        className="block w-full rounded-md px-3 py-1.5 text-base "
                                     />
                                 </div>
                                 <div>
@@ -271,7 +313,7 @@ const MyForm = () => {
                                         value={formValues.Address}
                                         onChange={handleChange}
                                         placeholder=" नागदा, मध्य प्रदेश, 452001"
-                                        className="block w-full rounded-md px-3 py-1.5 text-base"
+                                        className="block w-full rounded-md px-3 py-1.5 text-base "
                                     />
                                 </div>
                                 <div>
@@ -282,10 +324,11 @@ const MyForm = () => {
                                         value={formValues.Message}
                                         onChange={handleChange}
                                         placeholder="पशु के प्रति अपने विचार"
-                                        className="block w-full rounded-md px-3 py-1.5 text-base"></textarea>
+                                        className="block w-full rounded-md px-3 py-1.5 text-base "></textarea>
                                 </div>
-                                <div>
+                                <div  >
                                     <button
+                                        onClick={handleChangeLoading}
                                         id="Btn"
                                         type="submit"
                                         className="w-full rounded-md bg-green-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-green-500">
@@ -294,7 +337,7 @@ const MyForm = () => {
                                 </div>
                             </form>
                         </section>
-                    </div>
+                    </div >
                 </div >
             )
             }
