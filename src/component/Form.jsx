@@ -7,6 +7,7 @@ import Donation from "../assets/image/donastionQr.jpeg"
 import { Cube } from 'react-preloaders'
 import html2canvas from 'html2canvas-pro';
 import download from 'downloadjs';
+import { toBlob } from 'html-to-image';
 
 const MyForm = () => {
     const divRef = useRef();
@@ -102,21 +103,21 @@ const MyForm = () => {
     }
 
     const handleShare = async () => {
-        const div = document.getElementById('myDiv');
-        const textContent = div.innerText;
-
-        if (navigator.share) {
+        const blob = await toBlob(divRef.current);
+        const filesArray = [new File([blob], 'image.png', { type: blob.type })];
+        const shareData = {
+            files: filesArray,
+            title: 'Shared Image',
+            text: 'Check out this image!',
+        };
+        if (navigator.canShare && navigator.canShare(shareData)) {
             try {
-                await navigator.share({
-                    title: 'Shared Div Content',
-                    text: div,
-                });
-                console.log('Content shared successfully!');
+                await navigator.share(shareData);
             } catch (error) {
                 console.error('Error sharing:', error);
             }
         } else {
-            alert('Share not supported on this browser.');
+            console.error('Sharing not supported');
         }
     };
 
