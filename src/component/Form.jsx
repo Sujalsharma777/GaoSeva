@@ -5,7 +5,8 @@ import Addimg from "../assets/image/AddImga.png";
 import { useNavigate } from "react-router";
 import Donation from "../assets/image/donastionQr.jpeg"
 import { Cube } from 'react-preloaders'
-import html2canvas from 'html2canvas'
+import html2canvas from 'html2canvas-pro';
+import download from 'downloadjs';
 
 const MyForm = () => {
     const divRef = useRef();
@@ -22,6 +23,22 @@ const MyForm = () => {
         Message: "",
         IDImage: null,
     });
+    const downloadDivAsPng = async () => {
+        const element = divRef.current;
+
+        if (!element) {
+            return;
+        }
+
+        try {
+            const canvas = await html2canvas(element);
+            const dataURL = canvas.toDataURL('image/png');
+            download(dataURL, 'gaoseva.png');
+        } catch (error) {
+            console.error('Error capturing or downloading the div:', error);
+        }
+    };
+
 
     const handleChange = (e) => {
 
@@ -83,15 +100,7 @@ const MyForm = () => {
         setLoading(true);
 
     }
-    const handleDownload = () => {
-        const div = document.getElementById('myDiv');
-        html2canvas(div).then((canvas) => {
-            const link = document.createElement('a');
-            link.download = 'my-div-content.png';
-            link.href = canvas.toDataURL()
-            link.click();
-        });
-    };
+
     const handleShare = async () => {
         const div = document.getElementById('myDiv');
         const textContent = div.innerText;
@@ -100,7 +109,7 @@ const MyForm = () => {
             try {
                 await navigator.share({
                     title: 'Shared Div Content',
-                    text: textContent,
+                    text: div,
                 });
                 console.log('Content shared successfully!');
             } catch (error) {
@@ -130,7 +139,7 @@ const MyForm = () => {
                 < div className="font-devanagari font-bold sm:w-full h-full flex justify-center items-center mt-5" >
                     < div id="myDiv"
                         className="bg-white grid gap-5 items-center justify-center min-h-screen  p-4"
-                        ref={divRef}>
+                    >
                         <div
                             className="max-w-md w-full border border-red-600 rounded-[40px] gap-0 bg-white overflow-hidden "
                             ref={divRef}>
@@ -205,7 +214,7 @@ const MyForm = () => {
                             <div onClick={handleShare} className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
                                 Share
                             </div>
-                            <div onClick={handleDownload} className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
+                            <div onClick={downloadDivAsPng} className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
                                 Download
                             </div>
                         </div>
