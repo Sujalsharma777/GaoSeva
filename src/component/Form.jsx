@@ -89,7 +89,12 @@ const MyForm = () => {
 
     };
     const handleChangeLoading = () => {
-        setLoading(true);
+        if (formValues.name === "", formValues.IDImage === "", formValues.Message === "", formValues.Address === "", formValues.Message === "") {
+            console.log("Input Box Emty")
+        } else {
+            setLoading(true)
+        }
+
 
     }
     // share ID Logic
