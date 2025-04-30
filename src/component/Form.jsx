@@ -81,7 +81,7 @@ const MyForm = () => {
             })
             .catch((error) => {
                 console.error("Error submitting form:", error);
-                navigate("/FromFailed");
+                navigate("/FormFailed");
                 setLoading(false)
 
             });
@@ -147,10 +147,13 @@ const MyForm = () => {
                 </div>
             )}
             {hasSubmitted ? (
+
                 < div className="font-devanagari font-bold sm:w-full h-full flex justify-center items-center mt-5" >
+
                     < div id="myDiv"
                         className="bg-white grid gap-5 items-center justify-center min-h-screen  p-4"
-                    >
+                    >  <span className="text-md font-bold  text-red-500 text-center">User can fill
+                        the form only once,<br /> do not forget to <span className="font-extrabold text-rose-800 underline">Download your ID </span> </span>
                         <div
                             className="max-w-md w-full border border-red-600 rounded-[40px] gap-0 bg-white overflow-hidden "
                             ref={divRef}>
@@ -221,7 +224,7 @@ const MyForm = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex gap-3 text-center justify-center">
+                        <div className="flex gap-3 text-center justify-center sticky">
                             <div onClick={handleShare} className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
                                 Share
                             </div>
@@ -295,7 +298,7 @@ const MyForm = () => {
                                         id="name"
                                         name="name"
                                         type="text"
-                                        placeholder="आदिनाथ शंकर शर्मा"
+                                        placeholder="अपना नाम लिखे"
                                         required
                                         value={formValues.name}
                                         onChange={handleChange}
@@ -312,7 +315,7 @@ const MyForm = () => {
                                         id="mobileNo"
                                         name="mobileNo"
                                         type="tel"
-                                        placeholder="8717487898"
+                                        placeholder="+91"
                                         required
                                         value={formValues.mobileNo}
                                         onChange={handleChange}
@@ -332,7 +335,7 @@ const MyForm = () => {
                                         required
                                         value={formValues.Address}
                                         onChange={handleChange}
-                                        placeholder=" नागदा, मध्य प्रदेश, 452001"
+                                        placeholder="अपने शहर का नाम लिखे"
                                         className="block w-full rounded-md px-3 py-1.5 text-base "
                                     />
                                 </div>
