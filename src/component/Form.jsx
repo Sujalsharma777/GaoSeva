@@ -8,7 +8,6 @@ import { Cube } from 'react-preloaders'
 import html2canvas from 'html2canvas-pro';
 import download from 'downloadjs';
 import { toBlob } from 'html-to-image';
-import env from 
 
 const MyForm = () => {
     const divRef = useRef();
@@ -55,7 +54,6 @@ const MyForm = () => {
     }, []);
 
 
-    const excelurl = process.env.REACT_APP_API_KEY
 
     // form data store in excel 
     const handleEvent = (e) => {
