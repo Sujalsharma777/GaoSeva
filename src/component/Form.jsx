@@ -8,6 +8,7 @@ import { Cube } from 'react-preloaders'
 import html2canvas from 'html2canvas-pro';
 import download from 'downloadjs';
 import { toBlob } from 'html-to-image';
+import Sgin from "../assets/image/SIG.png"
 
 const MyForm = () => {
     const divRef = useRef();
@@ -151,7 +152,7 @@ const MyForm = () => {
                 < div className="font-devanagari font-bold sm:w-full h-full flex justify-center items-center mt-5" >
 
                     < div id="myDiv"
-                        className="bg-white grid gap-5 items-center justify-center min-h-screen  p-4"
+                        className=" bg-white grid gap-5 items-center justify-center min-h-screen  p-4"
                     >  <span className="text-md font-bold  text-red-500 text-center">User can fill
                         the form only once,<br /> do not forget to <span className="font-extrabold text-rose-800 underline">Download your ID </span> </span>
                         <div
@@ -165,14 +166,17 @@ const MyForm = () => {
                                         alt="Logo"
                                     />
                                     <h1 className="text-white font-extrabold text-3xl ml-3 leading-tight">
-                                        गौ सेवा टीम
-                                        <p className="text-white text-lg font-extrabold">
-                                            संस्थापक : <br />
+                                        गौ सेवक टीम
+
+                                        <p className="text-white text-sm font-extrabold">
+                                            संस्थापक :
                                             <span className="text-yellow-400">
-                                                आचार्य धर्मेश महाराज,
+                                                आचार्य गुरु श्री धर्मेश महाराज
                                             </span>
-                                            <br />उज्जैन
+
                                         </p>
+
+                                        <p className="text-sm">मुख्या कार्यलय: दानीगेट बिलोटी पूरा उज्जैन , संपर्क : <span className="text-yellow-400">8889121008</span> </p>
                                     </h1>
                                 </div>
                             </div>
@@ -206,6 +210,10 @@ const MyForm = () => {
                                         <span>{formValues.Message}</span>
                                     </div>
                                 </div>
+                                <div className="flex items-center flex-col">
+                                    <img src={Sgin} alt="Image not found" className="w-28 h-auto " />
+                                    <span className="text-[10px] underline"> आचार्य गुरु श्री धर्मेश महाराज</span>
+                                </div>
                                 <div className="mt-10 flex justify-center items-center gap-5">
                                     <div>
                                         <img
@@ -223,6 +231,9 @@ const MyForm = () => {
                                     </div>
                                 </div>
                             </div>
+                            <div>
+
+                            </div>
                         </div>
                         <div className="flex gap-3 text-center justify-center sticky">
                             <div onClick={handleShare} className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
@@ -231,6 +242,7 @@ const MyForm = () => {
                             <div onClick={downloadDivAsPng} className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
                                 Download
                             </div>
+                            <div></div>
                         </div>
                     </div >
                 </div >
@@ -238,7 +250,7 @@ const MyForm = () => {
 
                 < div
                     style={{ backgroundImage: `url(${image})` }}
-                    className=" bg-no-repeat bg-top bg-size-full sm:bg-size-[1500px] ">
+                    className="font-devanagari bg-no-repeat bg-top bg-size-full sm:bg-size-[1500px] ">
                     <div className="bg-linear-to-t from-rose-900 to-rose-0 flex flex-col justify-center items-center">
                         <div className="flex justify-center items-center flex-col *:p-5">
                             <div>
