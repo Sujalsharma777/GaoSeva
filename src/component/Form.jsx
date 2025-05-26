@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import logo from "../../public/f-1.jpg";
-import img from "../assets/image/0.jpg";
+import logo from "/f-1.jpg";
+import img from "../assets/image/gaomata.jpg";
 import Addimg from "../assets/image/AddImga.png";
 import { useNavigate } from "react-router";
 import Donation from "../assets/image/donastionQr.jpeg"
@@ -9,12 +9,14 @@ import html2canvas from 'html2canvas-pro';
 import download from 'downloadjs';
 import { toBlob } from 'html-to-image';
 import Sgin from "../assets/image/SIG.png"
+const apiUrl = import.meta.env.VITE_Api_Url
 
 const MyForm = () => {
     const divRef = useRef();
     const navigate = useNavigate();
-    const formRef = useRef(null);
     const [hasSubmitted, setHasSubmitted] = useState(false);
+
+    const formRef = useRef(null);
     const [loading, setLoading] = useState(false);
     const preloaders = document.getElementById("preloader ")
 
@@ -34,23 +36,51 @@ const MyForm = () => {
 
 
     const handleChange = (e) => {
-
         const { name, value, files } = e.target;
 
-        setFormValues(prev => ({
-            ...prev,
+        if (files && files[0]) {
+            const file = files[0];
 
-            [name]: files ? files[0] : value,
-        }));
+            // Convert image to base64 and store in localStorage
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64Image = reader.result;
 
+                // Save image and form state
+                setFormValues(prev => ({
+                    ...prev,
+                    [name]: file,
+                }));
+                localStorage.setItem("userImageBase64", base64Image);
+            };
+
+            reader.readAsDataURL(file); // Convert to base64
+        } else {
+            // For other inputs
+            setFormValues(prev => ({
+                ...prev,
+                [name]: value,
+            }));
+        }
     };
 
 
+
     useEffect(() => {
+        localStorage.setItem("image", img)
         const submitted = localStorage.getItem("formSubmitted");
         if (submitted === "true") {
             setHasSubmitted(true)
+            const savedData = localStorage.getItem("formData");
+            const storedImage = localStorage.getItem("userImageBase64");
 
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                if (storedImage) {
+                    parsedData.IDImage = storedImage; // Attach base64 image
+                }
+                setFormValues(parsedData);
+            }
         }
     }, []);
 
@@ -63,7 +93,7 @@ const MyForm = () => {
         const formData = new FormData(formRef.current);
 
         fetch(
-            "https://script.google.com/macros/s/AKfycbyrdVh04lw362JdNtxWoBlxnPZFBU1_7qIpnb-2LgWfhWtd9pthMbqtAgLuy2lqUHZMQw/exec",
+            apiUrl,
             {
                 method: "POST",
                 body: formData,
@@ -75,6 +105,7 @@ const MyForm = () => {
             })
             .then(() => {
                 localStorage.setItem("formSubmitted", 'true');
+                localStorage.setItem("formData", JSON.stringify(formValues));
                 setHasSubmitted(true);
                 setLoading(false)
 
@@ -90,8 +121,15 @@ const MyForm = () => {
 
     };
     const handleChangeLoading = () => {
-        if (formValues.name === "", formValues.IDImage === "", formValues.Message === "", formValues.Address === "", formValues.Message === "") {
-            console.log("Input Box Emty")
+        if (
+            !formValues.name ||
+            !formValues.IDImage ||
+            !formValues.Message ||
+            !formValues.Address ||
+            !formValues.mobileNo
+        ) {
+            console.log("Some input fields are empty");
+            return;
         } else {
             setLoading(true)
         }
@@ -134,6 +172,15 @@ const MyForm = () => {
         }
     };
 
+    const getImageSrc = (image) => {
+        if (image instanceof File) {
+            return URL.createObjectURL(image);
+        } else if (typeof image === "string") {
+            return image; // Could be base64 or a direct URL
+        } else {
+            return Addimg; // Default image
+        }
+    };
 
     const image = img;
 
@@ -152,87 +199,87 @@ const MyForm = () => {
                 < div className="font-devanagari font-bold sm:w-full h-full flex justify-center items-center mt-5" >
 
                     < div id="myDiv"
-                        className=" bg-white grid gap-5 items-center justify-center min-h-screen  p-4"
+                        className=" bg-white grid gap-5 items-center justify-center min-h-screen  p-4 transform scale-[0.6] origin-top"
                     >  <span className="text-md font-bold  text-red-500 text-center">User can fill
                         the form only once,<br /> do not forget to <span className="font-extrabold text-rose-800 underline">Download your ID </span> </span>
-                        <div
-                            className="max-w-md w-full border border-red-600 rounded-[40px] gap-0 bg-white overflow-hidden "
-                            ref={divRef}>
-                            <div className="h-50 flex flex-col bg-gradient-to-r from-red-500 to-red-600 p-6 rounded-t-[40px]">
-                                <div className="flex items-center pt-5 mb-4">
-                                    <img
-                                        className="w-30 h-30 rounded-full border-2 border-white"
-                                        src={logo}
-                                        alt="Logo"
-                                    />
-                                    <h1 className="text-white font-extrabold text-3xl ml-3 leading-tight">
-                                        गौ सेवक टीम
-
-                                        <p className="text-white text-sm font-extrabold">
-                                            संस्थापक :
-                                            <span className="text-yellow-400">
-                                                आचार्य गुरु श्री धर्मेश महाराज
-                                            </span>
-
-                                        </p>
-
-                                        <p className="text-sm">मुख्या कार्यलय: दानीगेट बिलोटी पूरा उज्जैन , संपर्क : <span className="text-yellow-400">8889121008</span> </p>
-                                    </h1>
-                                </div>
-                            </div>
-                            <div className="justify-between p-6">
-                                <div className="flex justify-center mb-4">
-                                    <img
-                                        className="w-28 h-28 rounded-full border-2 border-orange-600 object-cover"
-                                        alt="User Image"
-                                        src={
-                                            formValues.IDImage
-                                                ? URL.createObjectURL(formValues.IDImage)
-                                                : Addimg
-                                        }
-                                    />
-                                </div>
-                                <div className="flex flex-col space-y-2 text-sm text-gray-900 font-semibold">
-                                    <div className="flex justify-between">
-                                        <span>नाम:</span>
-                                        <span>{formValues.name}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span>मोबाइल नंबर:</span>
-                                        <span>{formValues.mobileNo}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span>पता:</span>
-                                        <span>{formValues.Address}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span>विचार:</span>
-                                        <span>{formValues.Message}</span>
-                                    </div>
-                                </div>
-                                <div className="flex items-center flex-col">
-                                    <img src={Sgin} alt="Image not found" className="w-28 h-auto " />
-                                    <span className="text-[10px] underline"> आचार्य गुरु श्री धर्मेश महाराज</span>
-                                </div>
-                                <div className="mt-10 flex justify-center items-center gap-5">
-                                    <div>
+                        <div className=" ">
+                            <div
+                                className=" max-w-md w-full border border-red-600 rounded-[40px] gap-0 bg-white overflow-hidden "
+                                ref={divRef}>
+                                <div className="h-50 flex flex-col bg-gradient-to-r from-red-500 to-red-600 p-6 rounded-t-[40px]">
+                                    <div className="flex items-center pt-5 mb-4">
                                         <img
-                                            alt=""
-                                            className="w-42 h-auto border border-red-600"
-                                            src={Donation}
+                                            className="w-30 h-30 rounded-full border-2 border-white"
+                                            src={logo}
+                                            alt="Logo"
+                                        />
+                                        <h1 className="text-white font-extrabold text-3xl ml-3 leading-tight">
+                                            गौ सेवक टीम
+
+                                            <p className="text-white text-sm font-extrabold">
+                                                संस्थापक :
+                                                <span className="text-yellow-400">
+                                                    आचार्य गुरु श्री धर्मेश महाराज
+                                                </span>
+
+                                            </p>
+
+                                            <p className="text-sm">मुख्या कार्यलय: दानीगेट बिलोटी पूरा उज्जैन , संपर्क : <span className="text-yellow-400">8889121008</span> </p>
+                                        </h1>
+                                    </div>
+                                </div>
+                                <div className="justify-between p-6">
+                                    <div className="flex justify-center mb-4">
+                                        <img
+                                            className="w-28 h-28 rounded-full border-2 border-orange-600 object-cover"
+                                            alt="User Image"
+                                            src={
+                                                getImageSrc(formValues.IDImage)
+                                            }
                                         />
                                     </div>
-                                    <div className="text-black text-lg font-extrabold">
-                                        <p>
-                                            गौ माता की सेवा करें, समृद्धि और संस्कृति विकास का हिस्सा
-                                            बने | <br />
-                                            <span className="font-bold">"सेवा करें"</span>
-                                        </p>
+                                    <div className="flex flex-col space-y-2 text-sm text-gray-900 font-semibold">
+                                        <div className="flex justify-between">
+                                            <span>नाम:</span>
+                                            <span>{formValues.name}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span>मोबाइल नंबर:</span>
+                                            <span>{formValues.mobileNo}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span>पता:</span>
+                                            <span>{formValues.Address}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span>विचार:</span>
+                                            <span>{formValues.Message}</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center flex-col">
+                                        <img src={Sgin} alt="Image not found" className="w-28 h-auto " />
+                                        <span className="text-[10px] underline"> आचार्य गुरु श्री धर्मेश महाराज</span>
+                                    </div>
+                                    <div className="mt-10 flex justify-center items-center gap-5">
+                                        <div>
+                                            <img
+                                                alt=""
+                                                className="w-42 h-auto border border-red-600"
+                                                src={Donation}
+                                            />
+                                        </div>
+                                        <div className="text-black text-lg font-extrabold">
+                                            <p>
+                                                गौ माता की सेवा करें, समृद्धि और संस्कृति विकास का हिस्सा
+                                                बने | <br />
+                                                <span className="font-bold">"सेवा करें"</span>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div>
+                                <div>
 
+                                </div>
                             </div>
                         </div>
                         <div className="flex gap-3 text-center justify-center sticky">
@@ -258,11 +305,12 @@ const MyForm = () => {
                                     src={logo}
                                     alt="logo not found"
                                     className="w-36 h-auto  rounded-full ring-8 ring-white shadow-xl shadow-black"
+
                                 />
                             </div>
                             <div>
                                 <h1 className="text-4xl font-extrabold drop-shadow-lg drop-shadow-black text-white">
-                                    गौ सेवा टीम
+                                    गौ सेवक टीम
                                 </h1>
                             </div>
                         </div>
@@ -284,6 +332,7 @@ const MyForm = () => {
                                                             ? URL.createObjectURL(formValues.IDImage)
                                                             : Addimg
                                                     }
+                                                    required
                                                 />
                                             </label>
                                         </div>
