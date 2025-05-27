@@ -201,7 +201,16 @@ const MyForm = () => {
                     < div id="myDiv"
                         className=" bg-white  p-4"
                     >  <span className="text-md font-bold  text-red-500 text-center">User can fill
-                        the form only once,<br /> do not forget to <span className="font-extrabold text-rose-800 underline">Download your ID </span> </span></div>
+                        the form only once,<br /> do not forget to <span className="font-extrabold text-rose-800 underline">Download your ID </span> </span>
+                        <div className="flex gap-3 text-center justify-center sticky my-5">
+                            <div onClick={handleShare} className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
+                                Share
+                            </div>
+                            <div onClick={downloadDivAsPng} className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
+                                Download
+                            </div>
+                            <div></div>
+                        </div></div>
                     <div className="sm:p-50  transform-view scale-50 origin-top " ref={divRef}   >
                         <div
                             className=" max-w-md w-full border border-red-600 rounded-[40px] gap-0 bg-white overflow-hidden "
@@ -280,15 +289,7 @@ const MyForm = () => {
 
                         </div>
                     </div>
-                    <div className="flex gap-3 text-center justify-center sticky">
-                        <div onClick={handleShare} className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
-                            Share
-                        </div>
-                        <div onClick={downloadDivAsPng} className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
-                            Download
-                        </div>
-                        <div></div>
-                    </div>
+
                 </div >
 
             ) : (
