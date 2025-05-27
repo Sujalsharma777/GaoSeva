@@ -211,7 +211,7 @@ const MyForm = () => {
                             </div>
                             <div></div>
                         </div></div>
-                    <div className="sm:p-50  transform-view scale-50 origin-top " ref={divRef}   >
+                    <div className="sm:p-50  " ref={divRef}   >
                         <div
                             className=" max-w-md w-full border border-red-600 rounded-[40px] gap-0 bg-white overflow-hidden "
                         >
