@@ -196,103 +196,101 @@ const MyForm = () => {
             )}
             {hasSubmitted ? (
 
-                < div className="font-devanagari font-bold sm:w-full h-full flex justify-center items-center mt-5" >
+                < div className="font-devanagari font-bold sm:w-full h-full flex justify-center items-center flex-col " >
 
                     < div id="myDiv"
-                        className=" bg-white grid gap-5 items-center justify-center min-h-screen  p-4 transform scale-[0.6] origin-top"
+                        className=" bg-white  p-4"
                     >  <span className="text-md font-bold  text-red-500 text-center">User can fill
-                        the form only once,<br /> do not forget to <span className="font-extrabold text-rose-800 underline">Download your ID </span> </span>
-                        <div className=" ">
-                            <div
-                                className=" max-w-md w-full border border-red-600 rounded-[40px] gap-0 bg-white overflow-hidden "
-                                ref={divRef}>
-                                <div className="h-50 flex flex-col bg-gradient-to-r from-red-500 to-red-600 p-6 rounded-t-[40px]">
-                                    <div className="flex items-center pt-5 mb-4">
+                        the form only once,<br /> do not forget to <span className="font-extrabold text-rose-800 underline">Download your ID </span> </span></div>
+                    <div className="sm:p-50  transform-view scale-50 origin-top " ref={divRef}   >
+                        <div
+                            className=" max-w-md w-full border border-red-600 rounded-[40px] gap-0 bg-white overflow-hidden "
+                        >
+                            <div className="h-50 flex flex-col bg-gradient-to-r from-red-500 to-red-600 p-6 rounded-t-[40px]">
+                                <div className="flex items-center pt-5 mb-4">
+                                    <img
+                                        className="w-30 h-30 rounded-full border-2 border-white"
+                                        src={logo}
+                                        alt="Logo"
+                                    />
+                                    <h1 className="text-white font-extrabold text-3xl ml-3 leading-tight">
+                                        गौ सेवक टीम
+
+                                        <p className="text-white text-sm font-extrabold">
+                                            संस्थापक :
+                                            <span className="text-yellow-400">
+                                                आचार्य गुरु श्री धर्मेश महाराज
+                                            </span>
+
+                                        </p>
+
+                                        <p className="text-sm">मुख्या कार्यलय: दानीगेट बिलोटी पूरा उज्जैन , संपर्क : <span className="text-yellow-400">8889121008</span> </p>
+                                    </h1>
+                                </div>
+                            </div>
+                            <div className="justify-between p-6 ">
+                                <div className="flex justify-center mb-4">
+                                    <img
+                                        className="w-28 h-28 rounded-full border-2 border-orange-600 object-cover"
+                                        alt="User Image"
+                                        src={
+                                            getImageSrc(formValues.IDImage)
+                                        }
+                                    />
+                                </div>
+                                <div className="flex flex-col space-y-2 text-sm text-gray-900 font-semibold *:text-left">
+                                    <div className="flex justify-between">
+                                        <span>नाम:</span>
+                                        <span className="">{formValues.name}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span>मोबाइल नंबर:</span>
+                                        <span>{formValues.mobileNo}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span>पता:</span>
+                                        <span>{formValues.Address}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span>विचार:</span>
+                                        <span>{formValues.Message}</span>
+                                    </div>
+                                </div>
+                                <div className="flex items-center flex-col">
+                                    <img src={Sgin} alt="Image not found" className="w-28 h-auto " />
+                                    <span className="text-[10px] underline"> आचार्य गुरु श्री धर्मेश महाराज</span>
+                                </div>
+                                <div className="mt-10 flex justify-center items-center gap-5">
+                                    <div>
                                         <img
-                                            className="w-30 h-30 rounded-full border-2 border-white"
-                                            src={logo}
-                                            alt="Logo"
-                                        />
-                                        <h1 className="text-white font-extrabold text-3xl ml-3 leading-tight">
-                                            गौ सेवक टीम
-
-                                            <p className="text-white text-sm font-extrabold">
-                                                संस्थापक :
-                                                <span className="text-yellow-400">
-                                                    आचार्य गुरु श्री धर्मेश महाराज
-                                                </span>
-
-                                            </p>
-
-                                            <p className="text-sm">मुख्या कार्यलय: दानीगेट बिलोटी पूरा उज्जैन , संपर्क : <span className="text-yellow-400">8889121008</span> </p>
-                                        </h1>
-                                    </div>
-                                </div>
-                                <div className="justify-between p-6">
-                                    <div className="flex justify-center mb-4">
-                                        <img
-                                            className="w-28 h-28 rounded-full border-2 border-orange-600 object-cover"
-                                            alt="User Image"
-                                            src={
-                                                getImageSrc(formValues.IDImage)
-                                            }
+                                            alt=""
+                                            className="w-42 h-auto border border-red-600"
+                                            src={Donation}
                                         />
                                     </div>
-                                    <div className="flex flex-col space-y-2 text-sm text-gray-900 font-semibold">
-                                        <div className="flex justify-between">
-                                            <span>नाम:</span>
-                                            <span>{formValues.name}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span>मोबाइल नंबर:</span>
-                                            <span>{formValues.mobileNo}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span>पता:</span>
-                                            <span>{formValues.Address}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span>विचार:</span>
-                                            <span>{formValues.Message}</span>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center flex-col">
-                                        <img src={Sgin} alt="Image not found" className="w-28 h-auto " />
-                                        <span className="text-[10px] underline"> आचार्य गुरु श्री धर्मेश महाराज</span>
-                                    </div>
-                                    <div className="mt-10 flex justify-center items-center gap-5">
-                                        <div>
-                                            <img
-                                                alt=""
-                                                className="w-42 h-auto border border-red-600"
-                                                src={Donation}
-                                            />
-                                        </div>
-                                        <div className="text-black text-lg font-extrabold">
-                                            <p>
-                                                गौ माता की सेवा करें, समृद्धि और संस्कृति विकास का हिस्सा
-                                                बने | <br />
-                                                <span className="font-bold">"सेवा करें"</span>
-                                            </p>
-                                        </div>
+                                    <div className="text-black text-lg font-extrabold">
+                                        <p>
+                                            गौ माता की सेवा करें, समृद्धि और संस्कृति विकास का हिस्सा
+                                            बने | <br />
+                                            <span className="font-bold">"सेवा करें"</span>
+                                        </p>
                                     </div>
                                 </div>
-                                <div>
+                            </div>
 
-                                </div>
-                            </div>
                         </div>
-                        <div className="flex gap-3 text-center justify-center sticky">
-                            <div onClick={handleShare} className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
-                                Share
-                            </div>
-                            <div onClick={downloadDivAsPng} className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
-                                Download
-                            </div>
-                            <div></div>
+                    </div>
+                    <div className="flex gap-3 text-center justify-center sticky">
+                        <div onClick={handleShare} className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
+                            Share
                         </div>
-                    </div >
+                        <div onClick={downloadDivAsPng} className="bg-orange-500 p-2 border-orange-700 w-30 cursor-pointer hover:bg-orange-400">
+                            Download
+                        </div>
+                        <div></div>
+                    </div>
                 </div >
+
             ) : (
 
                 < div
@@ -352,7 +350,7 @@ const MyForm = () => {
                                 <div>
                                     <label
                                         htmlFor="name"
-                                        className="block text-sm/6 font-medium text-gray-900">
+                                        className="block text-sm/6 font-medium text-gray-900 ">
                                         नाम
                                     </label>
                                     <input
@@ -363,7 +361,7 @@ const MyForm = () => {
                                         required
                                         value={formValues.name}
                                         onChange={handleChange}
-                                        className="block w-full rounded-md px-3 py-1.5 text--base "
+                                        className="block w-full rounded-md px-3 py-1.5 text-base"
                                     />
                                 </div>
                                 <div>
